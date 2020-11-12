@@ -1,0 +1,37 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://Actors/Actor.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Actors/Enemy.gd" type="Script" id=2]
+[ext_resource path="res://icon.png" type="Texture" id=3]
+[ext_resource path="res://HUD/BehaviorNodes/Attraction.tres" type="Resource" id=4]
+[ext_resource path="res://Inventory.gd" type="Script" id=5]
+[ext_resource path="res://FlavorText/Actors/Enemy.tres" type="Resource" id=6]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 5 )
+items = [ ExtResource( 4 ), null, null, null, null, null, null, null, null ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 13.6926, 21.9768 )
+
+[node name="Enemy" instance=ExtResource( 1 )]
+collision_layer = 3
+collision_mask = 3
+script = ExtResource( 2 )
+inventory = SubResource( 1 )
+flavor_text = ExtResource( 6 )
+speed = 0.0
+
+[node name="CollisionShape2D" parent="." index="0"]
+shape = SubResource( 2 )
+
+[node name="Sprite" parent="." index="1"]
+modulate = Color( 1, 0, 0, 1 )
+position = Vector2( -0.38977, 0.222727 )
+scale = Vector2( 0.229164, 0.314426 )
+texture = ExtResource( 3 )
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource( 3 )

@@ -1,0 +1,7 @@
+[gd_scene format=2]
+
+[node name="AxeThrower" type="Position2D"]
+position = Vector2( -0.393452, 19.1523 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+enabled = true

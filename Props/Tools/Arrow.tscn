@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Props/Tools/Tool.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Props/Tools/Arrow.gd" type="Script" id=2]
+
+[node name="Arrow" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

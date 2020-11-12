@@ -1,0 +1,60 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Stages/Layer_1.tres" type="TileSet" id=2]
+
+[sub_resource type="GDScript" id=3]
+script/source = "extends TileMap
+
+export (NoiseTexture) var noise
+
+var start_present = false
+var end_present = false
+
+
+var tiles = []
+var real_tiles = []
+func _ready():
+	\"\"\"
+	for i in range(20):
+		var this = Rect2(Vector2(rand_range(0,400),rand_range(0, 400)),
+						 Vector2( rand_range(200, 100), rand_range(70, 100)))
+				
+		tiles.append(this)
+	
+	for rect in tiles:
+		for i in range(rect.size.x):
+			for j in range(rect.size.y):
+				set_cell(rect.position.x+ i + -1, rect.position.y+ j + -1, 1)
+			
+	self.update_bitmask_region(Vector2.ZERO, Vector2(1000,1000))
+	\"\"\"
+	
+	pass
+	
+"
+
+[sub_resource type="OpenSimplexNoise" id=1]
+seed = 2453453
+octaves = 8
+period = 13.9
+persistence = 0.0
+lacunarity = 0.1
+
+[sub_resource type="NoiseTexture" id=2]
+width = 128
+height = 128
+seamless = true
+noise = SubResource( 1 )
+
+[node name="Arena" type="TileMap"]
+tile_set = ExtResource( 2 )
+cell_size = Vector2( 16, 16 )
+format = 1
+tile_data = PoolIntArray( 196613, 0, 0, 196614, 0, 1, 196615, 0, 2, 262148, 0, 0, 262149, 0, 65542, 262150, 0, 5, 262151, 0, 131074, 327683, 0, 0, 327684, 0, 65537, 327685, 0, 131073, 327686, 0, 131074, 393219, 0, 65536, 393220, 0, 65538, 458755, 0, 131072, 458756, 0, 65537, 458757, 0, 2, 524292, 0, 131072, 524293, 0, 131074 )
+script = SubResource( 3 )
+noise = SubResource( 2 )
+
+[node name="TileMap" type="TileMap" parent="."]
+z_index = 2
+cell_size = Vector2( 16, 16 )
+format = 1
