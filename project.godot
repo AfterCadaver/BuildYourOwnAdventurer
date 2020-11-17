@@ -29,11 +29,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Actors/Enemy.gd"
 }, {
-"base": "Node",
-"class": "FiniteStateMachine",
-"language": "GDScript",
-"path": "res://FlavorText/Actors/FiniteStateMachine.gd"
-}, {
 "base": "Resource",
 "class": "FlavorText",
 "language": "GDScript",
@@ -69,7 +64,6 @@ _global_script_class_icons={
 "Arrow": "",
 "BehaviorNode": "",
 "Enemy": "",
-"FiniteStateMachine": "",
 "FlavorText": "",
 "GOAP": "",
 "Inventory": "",
@@ -81,11 +75,25 @@ _global_script_class_icons={
 [application]
 
 config/name="BYOA"
+run/main_scene="res://StartScreen.tscn"
+config/custom_user_dir_name="Build Your Own Adventurer"
 config/icon="res://icon.png"
+
+[autoload]
+
+WhiteBoard="*res://WhiteBoard.gd"
 
 [display]
 
+window/size/width=400
+window/size/height=400
 mouse_cursor/custom_image="res://Assets/PNG/cursorGauntlet_grey.png"
+window/stretch/mode="2d"
+window/stretch/aspect="keep"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "godot-behavior-tree-plugin" )
 
 [importer_defaults]
 

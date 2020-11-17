@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://addons/godot-behavior-tree-plugin/behavior_tree.gd" type="Script" id=2]
+[ext_resource path="res://Actors/Components/AvoidMobGroup.gd" type="Script" id=3]
+[ext_resource path="res://Actors/Components/SenseEnemies.gd" type="Script" id=4]
+[ext_resource path="res://addons/godot-behavior-tree-plugin/sequence.gd" type="Script" id=5]
+
+[node name="BehaviorTree" type="Node"]
+script = ExtResource( 2 )
+
+[node name="BehaviorSequence" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="SenseEnemies" type="Node" parent="BehaviorSequence"]
+script = ExtResource( 4 )
+
+[node name="AvoidMobGroup" type="Node" parent="BehaviorSequence"]
+script = ExtResource( 3 )

@@ -1,0 +1,56 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://addons/godot-behavior-tree-plugin/selector.gd" type="Script" id=1]
+[ext_resource path="res://addons/godot-behavior-tree-plugin/behavior_tree.gd" type="Script" id=2]
+[ext_resource path="res://Actors/Components/SensePlayer.gd" type="Script" id=3]
+[ext_resource path="res://Actors/Components/AttackPlayer.gd" type="Script" id=4]
+[ext_resource path="res://Actors/Components/ChasePlayer.gd" type="Script" id=5]
+[ext_resource path="res://addons/godot-behavior-tree-plugin/inverter.gd" type="Script" id=6]
+[ext_resource path="res://addons/godot-behavior-tree-plugin/sequence.gd" type="Script" id=7]
+[ext_resource path="res://Actors/Components/StopMoving.gd" type="Script" id=8]
+[ext_resource path="res://Actors/Components/PlayerTooClose.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Actors/Components/BoidsMovement.gd" type="Script" id=10]
+
+[node name="BehaviorTree" type="Node"]
+script = ExtResource( 2 )
+
+[node name="BehaviorSequence" type="Node" parent="."]
+script = ExtResource( 7 )
+
+[node name="KillPlayer" type="Node" parent="BehaviorSequence"]
+script = ExtResource( 7 )
+
+[node name="SensePlayer" type="Node" parent="BehaviorSequence/KillPlayer"]
+script = ExtResource( 3 )
+
+[node name="ChasePlayer" type="Node" parent="BehaviorSequence/KillPlayer"]
+script = ExtResource( 5 )
+
+[node name="BoidsMovement" type="Node" parent="BehaviorSequence/KillPlayer"]
+script = ExtResource( 10 )
+
+[node name="BehaviorSelector" type="Node" parent="BehaviorSequence/KillPlayer"]
+script = ExtResource( 1 )
+
+[node name="PlayerTooClose" parent="BehaviorSequence/KillPlayer/BehaviorSelector" instance=ExtResource( 9 )]
+
+[node name="BehaviorSequence" type="Node" parent="BehaviorSequence/KillPlayer/BehaviorSelector"]
+script = ExtResource( 7 )
+
+[node name="AttackPlayer" type="Node" parent="BehaviorSequence/KillPlayer/BehaviorSelector/BehaviorSequence"]
+script = ExtResource( 4 )
+
+[node name="StopMovement2" type="Node" parent="BehaviorSequence/KillPlayer/BehaviorSelector/BehaviorSequence"]
+script = ExtResource( 8 )
+
+[node name="Idle" type="Node" parent="BehaviorSequence"]
+script = ExtResource( 7 )
+
+[node name="BehaviorInverter" type="Node" parent="BehaviorSequence/Idle"]
+script = ExtResource( 6 )
+
+[node name="SensePlayer" type="Node" parent="BehaviorSequence/Idle/BehaviorInverter"]
+script = ExtResource( 3 )
+
+[node name="StopMovement" type="Node" parent="BehaviorSequence/Idle"]
+script = ExtResource( 8 )

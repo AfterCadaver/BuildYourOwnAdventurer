@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource( 1 )
 picture = ExtResource( 2 )
-name = ""
-description = ""
-abilities = ""
+name = "Enemy"
+description = "A vile being. Not a bad dancer"
+abilities = "arrows, axe"

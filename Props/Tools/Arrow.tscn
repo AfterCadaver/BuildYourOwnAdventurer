@@ -1,8 +1,44 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Props/Tools/Tool.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Props/Tools/Arrow.gd" type="Script" id=2]
 
+[sub_resource type="Animation" id=1]
+resource_name = "vibrate"
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.02, 0.03 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( -0.23011, -4.2187 ), Vector2( -1.21115, 3.03403 ), Vector2( -0.125, -0.75 ) ]
+}
+
 [node name="Arrow" instance=ExtResource( 1 )]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource( 2 )
+speed = 130
+
+[node name="Area2D" parent="." index="0"]
+rotation = 1.89194
+
+[node name="Sprite" parent="." index="1"]
+position = Vector2( -0.726173, 2.03169 )
+rotation = 1.64934
+scale = Vector2( 0.135441, 0.170009 )
+
+[node name="CollisionShape2D" parent="." index="2"]
+rotation = 1.52367
+
+[node name="AnimationPlayer" parent="." index="3"]
+anims/vibrate = SubResource( 1 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="." index="4"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
+[connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

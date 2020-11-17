@@ -6,6 +6,6 @@
 [resource]
 script = ExtResource( 1 )
 picture = ExtResource( 2 )
-name = "Player"
-description = "An instrument of your creation."
+name = "Ezekiel \"Zeke\" Browne"
+description = "The soon to be hero of the Dominion and warrior for hire thrhoughout the continent."
 abilities = ""

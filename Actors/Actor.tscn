@@ -1,8 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Actors/Actor.gd" type="Script" id=1]
 [ext_resource path="res://SaveFile.gd" type="Script" id=2]
 [ext_resource path="res://FlavorText/Actors/Player.tres" type="Resource" id=3]
+[ext_resource path="res://Props/Tools/Axe.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Assets/test_healthbar.png" type="Texture" id=5]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
@@ -12,21 +14,65 @@ data = {
 
 }
 
+[sub_resource type="Animation" id=2]
+resource_name = "swing_axe"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Axe:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 104.389, 49.9496 ), Vector2( -1.68369, 69.5927 ), Vector2( -92.0419, 52.1945 ) ]
+}
+
 [node name="Actor" type="KinematicBody2D"]
 input_pickable = true
 script = ExtResource( 1 )
 save_file = SubResource( 1 )
 flavor_text = ExtResource( 3 )
-speed = 111.553
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/swing_axe = SubResource( 2 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
+[node name="Axe" parent="." instance=ExtResource( 4 )]
+visible = false
+position = Vector2( -92.0419, 52.1945 )
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = -20.6017
+margin_top = -32.9628
+margin_right = 19.3983
+margin_bottom = -18.9628
+text = "Actor"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureProgress" type="TextureProgress" parent="."]
+margin_left = -20.0409
+margin_top = -9.22677
+margin_right = 19.9591
+margin_bottom = -6.22677
+value = 100.0
+texture_progress = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="input_event" from="." to="." method="_on_Actor_input_event"]
+[connection signal="mouse_entered" from="." to="." method="_on_Actor_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_Actor_mouse_exited"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
