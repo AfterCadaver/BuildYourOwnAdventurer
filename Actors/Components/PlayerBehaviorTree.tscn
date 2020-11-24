@@ -1,18 +1,54 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
+[ext_resource path="res://addons/godot-behavior-tree-plugin/inverter.gd" type="Script" id=1]
 [ext_resource path="res://addons/godot-behavior-tree-plugin/behavior_tree.gd" type="Script" id=2]
-[ext_resource path="res://Actors/Components/AvoidMobGroup.gd" type="Script" id=3]
-[ext_resource path="res://Actors/Components/SenseEnemies.gd" type="Script" id=4]
+[ext_resource path="res://Actors/Components/SenseEnemies.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Actors/Components/AvoidMobGroup.tscn" type="PackedScene" id=4]
 [ext_resource path="res://addons/godot-behavior-tree-plugin/sequence.gd" type="Script" id=5]
+[ext_resource path="res://addons/godot-behavior-tree-plugin/selector.gd" type="Script" id=6]
+[ext_resource path="res://Actors/Components/SenseTree.gd" type="Script" id=12]
+[ext_resource path="res://Actors/Components/StopMovement.tscn" type="PackedScene" id=14]
+[ext_resource path="res://Actors/Components/IsNearTree.gd" type="Script" id=15]
+[ext_resource path="res://Actors/Components/ReachTarget.gd" type="Script" id=16]
+[ext_resource path="res://Actors/Components/ChopTree.tscn" type="PackedScene" id=18]
 
 [node name="BehaviorTree" type="Node"]
 script = ExtResource( 2 )
 
-[node name="BehaviorSequence" type="Node" parent="."]
+[node name="BehaviorSelector" type="Node" parent="."]
+script = ExtResource( 6 )
+
+[node name="BehaviorSequence" type="Node" parent="BehaviorSelector"]
 script = ExtResource( 5 )
 
-[node name="SenseEnemies" type="Node" parent="BehaviorSequence"]
-script = ExtResource( 4 )
+[node name="SenseEnemies" parent="BehaviorSelector/BehaviorSequence" instance=ExtResource( 3 )]
 
-[node name="AvoidMobGroup" type="Node" parent="BehaviorSequence"]
-script = ExtResource( 3 )
+[node name="AvoidMobGroup" parent="BehaviorSelector/BehaviorSequence" instance=ExtResource( 4 )]
+
+[node name="GetWood" type="Node" parent="BehaviorSelector"]
+script = ExtResource( 5 )
+
+[node name="SenseTree" type="Node" parent="BehaviorSelector/GetWood"]
+script = ExtResource( 12 )
+
+[node name="ReachTarget2" type="Node" parent="BehaviorSelector/GetWood"]
+script = ExtResource( 16 )
+
+[node name="BehaviorSequence" type="Node" parent="BehaviorSelector/GetWood"]
+script = ExtResource( 5 )
+
+[node name="IsNearTree3" type="Node" parent="BehaviorSelector/GetWood/BehaviorSequence"]
+script = ExtResource( 15 )
+
+[node name="StopMovement" parent="BehaviorSelector/GetWood/BehaviorSequence" instance=ExtResource( 14 )]
+
+[node name="ChopTree" parent="BehaviorSelector/GetWood/BehaviorSequence" instance=ExtResource( 18 )]
+
+[node name="FindTrees" type="Node" parent="BehaviorSelector"]
+script = ExtResource( 5 )
+
+[node name="Isnotneartree" type="Node" parent="BehaviorSelector/FindTrees"]
+script = ExtResource( 1 )
+
+[node name="IsNearTree2" type="Node" parent="BehaviorSelector/FindTrees/Isnotneartree"]
+script = ExtResource( 15 )

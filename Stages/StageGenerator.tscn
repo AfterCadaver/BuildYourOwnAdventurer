@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Stages/StageGenerator.gd" type="Script" id=1]
+
+[sub_resource type="OpenSimplexNoise" id=1]
+
+[sub_resource type="NoiseTexture" id=2]
+noise = SubResource( 1 )
+
+[node name="StageGenerator" type="Node"]
+script = ExtResource( 1 )
+map_dimensions = Vector2( 150, 150 )
+noise = SubResource( 2 )

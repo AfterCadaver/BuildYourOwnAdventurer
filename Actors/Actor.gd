@@ -5,21 +5,23 @@ class_name Actor
 export (Resource) var save_file
 export (Resource) var inventory
 export (Resource) var flavor_text
-export (float, 1, 200, 1)var speed = 30
+
+export (int) var max_speed = 100
+export (float, 1, 700, 1)var speed = 30
 
 export (float, 200) var running_speed = 60
 
 onready var slow_mo_speed = speed / 2
 
 export (int, 1, 500) var health_points = 1
-onready var current_health = 100
+onready var current_health = health_points
 
 var arrow_number = 10
 
 export var shoot_arrows = false
 
 var fire_time = 0.0
-var FIRE_RATE = 0.8
+var FIRE_RATE = 0.1
 
 onready var BB = get_node("../BlackBoard")
 var goap = GOAP.new()
@@ -71,6 +73,7 @@ func slow_motion(slowdown:=false):
 
 func behavior():
 	#THE FUNCTION WHOSE PURPOSE IS TO CALL THE DIFFERENT BEHAVIORS OF THE ACTOR
+	"""
 	for item in inventory.items:
 		#ITERATE THRU ITEMS IN INVENTORY
 		if !item == null:
@@ -86,6 +89,8 @@ func behavior():
 			else:
 				#ALL OTHER BEHAVIORS ARE CALLED HERE
 				self.call(item.name)
+				"""
+	pass
 
 func search_for_priority(priority:String):
 	
@@ -106,8 +111,9 @@ func control_movement():
 	
 	
 func attraction_movement():
-	var target_direction = (target.global_position - self.global_position).normalized()
-	direction = target_direction
+	if target != null:
+		var target_direction = (target.global_position - self.global_position).normalized()
+		direction = target_direction
 
 	
 func _physics_process(delta):
@@ -117,18 +123,19 @@ func _physics_process(delta):
 	
 	move_and_slide(direction * speed)
 	
-	$Sprite.rotation = get_angle_to(target.position)
-	
 	if shoot_arrows and arrow_number > 0:
 	
 		self.shoot_arrows()
+		
+	if current_health <= 0:
+		queue_free()
 	
 func shoot_arrows():
 	if get_time() - fire_time < FIRE_RATE:
 		return
 	fire_time = get_time()
 	
-	if arrow_number >0:
+	if arrow_number >0 and is_instance_valid(target):
 		arrow_number -= 1
 		emit_signal("shoot", self, target)
 	
@@ -145,6 +152,7 @@ func _on_Actor_input_event(_viewport, event, _shape_idx):
 
 func _on_Area2D_body_entered(body):
 	current_health -= 1
+	$AnimationPlayer2.play("damaged")
 
 func _on_Actor_mouse_entered():
 	$Label.visible = true

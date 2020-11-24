@@ -7,5 +7,9 @@
 script = ExtResource( 1 )
 picture = ExtResource( 2 )
 name = "Enemy"
-description = "A vile being. Not a bad dancer"
+description = "The Escoran White-Ape-Man. Mostly Carnivorous in diet, it is know to be a semi-sapient being and used to inhabit Escoras in massive numbers.
+
+These are mostly social creatures capable of communication.
+
+There are two main varieties of Ape-Man or Yeti."
 abilities = "arrows, axe"

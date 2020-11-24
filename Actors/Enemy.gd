@@ -18,7 +18,7 @@ func swarm():
 	var percieved_velocity = Vector2.ZERO
 	
 	for mob in get_tree().get_nodes_in_group("enemies"):
-		if mob != self:
+		if mob != self and mob != null:
 			sum_mob_postion += mob.global_position
 			mob_number += 1
 			
@@ -64,3 +64,16 @@ func _process(delta):
 	
 func sleep():
 	self.modulate = Color.blue
+
+
+func _on_Enemy_tree_exiting():
+	
+	#This is a Duct Tape Solution
+	#come back to this later
+	#must focus on important testing
+	var array = BB.get("enemies")
+	var index = 0
+	for i in array:
+		index += 1
+		if i == self:
+			array.remove(index)

@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Actors/Actor.gd" type="Script" id=1]
 [ext_resource path="res://SaveFile.gd" type="Script" id=2]
 [ext_resource path="res://FlavorText/Actors/Player.tres" type="Resource" id=3]
 [ext_resource path="res://Props/Tools/Axe.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Assets/test_healthbar.png" type="Texture" id=5]
+[ext_resource path="res://HUD/Norse.otf" type="DynamicFontData" id=6]
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 2 )
@@ -30,6 +31,25 @@ tracks/0/keys = {
 "values": [ Vector2( 104.389, 49.9496 ), Vector2( -1.68369, 69.5927 ), Vector2( -92.0419, 52.1945 ) ]
 }
 
+[sub_resource type="DynamicFont" id=3]
+size = 23
+font_data = ExtResource( 6 )
+
+[sub_resource type="Animation" id=4]
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="Actor" type="KinematicBody2D"]
 input_pickable = true
 script = ExtResource( 1 )
@@ -39,6 +59,7 @@ flavor_text = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 0, 0, 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/swing_axe = SubResource( 2 )
@@ -49,14 +70,14 @@ anims/swing_axe = SubResource( 2 )
 
 [node name="Axe" parent="." instance=ExtResource( 4 )]
 visible = false
-position = Vector2( -92.0419, 52.1945 )
+position = Vector2( 104.389, 49.9496 )
 
 [node name="Label" type="Label" parent="."]
-visible = false
-margin_left = -20.6017
-margin_top = -32.9628
-margin_right = 19.3983
-margin_bottom = -18.9628
+margin_left = -22.4746
+margin_top = -71.4442
+margin_right = 22.5254
+margin_bottom = -47.4442
+custom_fonts/font = SubResource( 3 )
 text = "Actor"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -72,6 +93,9 @@ texture_progress = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+anims/damaged = SubResource( 4 )
 [connection signal="input_event" from="." to="." method="_on_Actor_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_Actor_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Actor_mouse_exited"]

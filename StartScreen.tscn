@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://icon.png" type="Texture" id=1]
 [ext_resource path="res://StartScreen.gd" type="Script" id=2]
+[ext_resource path="res://HUD/Norse.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://HUD/Norse-Bold.otf" type="DynamicFontData" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 41
+font_data = ExtResource( 4 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = ExtResource( 3 )
 
 [node name="StartScreen" type="Control"]
 anchor_right = 1.0
@@ -21,14 +31,15 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="ColorRect"]
-anchor_top = 0.5
+anchor_top = 0.423
 anchor_right = 1.0
 anchor_bottom = 0.5
 margin_left = 0.840881
-margin_top = -25.2964
+margin_top = -14.1174
 margin_right = 0.840881
-margin_bottom = -11.2964
-text = "Build Your Own Hero"
+margin_bottom = -2.2964
+custom_fonts/font = SubResource( 1 )
+text = "Build Your Own Adventurer"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
@@ -42,23 +53,40 @@ margin_left = 1.26135
 margin_top = -0.305603
 margin_right = 1.26135
 margin_bottom = 13.6944
-text = "Push any button"
+custom_fonts/font = SubResource( 2 )
+text = "Push SpaceBar"
 align = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="TextureButton" type="TextureButton" parent="ColorRect"]
-anchor_left = 0.816
-anchor_top = 0.805
-anchor_right = 0.976
-anchor_bottom = 0.965
-margin_left = -0.0419312
-margin_top = -0.177673
-margin_right = -0.0419312
-margin_bottom = -0.177643
+anchor_left = 0.832
+anchor_top = 0.74
+anchor_right = 0.984
+anchor_bottom = 0.942
+margin_left = 0.696014
+margin_top = 2.17314
+margin_right = 0.0960083
+margin_bottom = 0.119141
 texture_normal = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="OpeningTextCrawl" type="RichTextLabel" parent="."]
+visible = false
+margin_left = 54.7812
+margin_top = 11.3181
+margin_right = 248.781
+margin_bottom = 416.318
+text = "	War! The Escorans have attacked from their stronghold in the north,  their dark armies sail from Escoras to dominate the continent and deliver terror.
+
+A Company of A thousand men is brought in to do battle with the Escoran Menace ravaging the northern coasts.
+
+Zeke Browne, future hero of the dominion, joined the charge, but...
+
+Their ship was attacked by Escoran raiders, its crew and soldiers captured.In a last ditch effort to escape, Zeke jumped out.
+
+He now finds himself in an unfamiliar island."
 [connection signal="pressed" from="ColorRect/TextureButton" to="." method="_on_TextureButton_pressed"]

@@ -1,38 +1,70 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Actors/Actor.tscn" type="PackedScene" id=1]
-[ext_resource path="res://icon.png" type="Texture" id=2]
 [ext_resource path="res://Actors/Player.gd" type="Script" id=3]
 [ext_resource path="res://HUD/Inventory.tres" type="Resource" id=4]
 [ext_resource path="res://Actors/Components/PlayerBehaviorTree.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Assets/hero.png" type="Texture" id=6]
+[ext_resource path="res://Assets/PNG/iconCircle_grey.png" type="Texture" id=7]
 
 [sub_resource type="CircleShape2D" id=1]
-radius = 14.75
+radius = 23.9584
 
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 18.9711
+[sub_resource type="Animation" id=2]
+resource_name = "walk_left"
+length = 0.2
+loop = true
+step = 0.01
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0.05, 0.13 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 22.5135
 height = 0.0
 
 [node name="Player" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 inventory = ExtResource( 4 )
+speed = 60.0
 health_points = 50
+shoot_arrows = true
 able_to_play = false
 
 [node name="CollisionShape2D" parent="." index="0"]
 shape = SubResource( 1 )
 
 [node name="Sprite" parent="." index="1"]
-position = Vector2( 0.117989, -0.35396 )
-scale = Vector2( 0.207293, 0.325277 )
-texture = ExtResource( 2 )
+modulate = Color( 1, 1, 1, 1 )
+texture = ExtResource( 6 )
+hframes = 2
+frame = 1
+region_rect = Rect2( 0, 0, 64, 64 )
+
+[node name="AnimationPlayer" parent="." index="2"]
+anims/walk_left = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="." index="3"]
 current = true
-zoom = Vector2( 1.5, 1.5 )
+
+[node name="Area2D" parent="." index="4"]
+collision_layer = 2
+collision_mask = 2
 
 [node name="CollisionShape2D" parent="Area2D" index="0"]
-shape = SubResource( 2 )
+shape = SubResource( 3 )
+
+[node name="Label" parent="." index="6"]
+visible = false
 
 [node name="BehaviorTree" parent="." index="7" instance=ExtResource( 5 )]
 
@@ -41,3 +73,9 @@ margin_left = -35.3916
 margin_top = -36.591
 margin_right = 34.6084
 margin_bottom = -26.591
+
+[node name="Light2D2" type="Light2D" parent="." index="10"]
+visible = false
+enabled = false
+texture = ExtResource( 7 )
+texture_scale = 10.56

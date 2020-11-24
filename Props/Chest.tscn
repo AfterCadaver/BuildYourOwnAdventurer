@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Props/Prop.tscn" type="PackedScene" id=1]
+[ext_resource path="res://icon.png" type="Texture" id=2]
+[ext_resource path="res://FlavorText.gd" type="Script" id=3]
+
+[sub_resource type="Resource" id=2]
+script = ExtResource( 3 )
+picture = ExtResource( 2 )
+name = "Treasure"
+description = "Probably contains something great.
+
+Keep positve."
+abilities = "It opens up, holds things"
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 38.6731
+
+[node name="Chest" instance=ExtResource( 1 )]
+flavor_text = SubResource( 2 )
+
+[node name="Area2D" type="Area2D" parent="." index="2"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource( 1 )
+[connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]

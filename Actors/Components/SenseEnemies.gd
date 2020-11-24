@@ -4,7 +4,7 @@ extends "res://addons/godot-behavior-tree-plugin/condition.gd"
 func tick(tick: Tick) -> int:
 	
 	var enemies_array = tick.blackboard.get("enemies")
-	if enemies_array.size() > 0:
+	if enemies_array.size() > 1:
 		return OK
 	
 	else:
