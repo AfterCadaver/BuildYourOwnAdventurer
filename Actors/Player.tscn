@@ -33,6 +33,7 @@ radius = 22.5135
 height = 0.0
 
 [node name="Player" instance=ExtResource( 1 )]
+material = null
 script = ExtResource( 3 )
 inventory = ExtResource( 4 )
 speed = 60.0
@@ -55,6 +56,7 @@ anims/walk_left = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="." index="3"]
 current = true
+zoom = Vector2( 2, 2 )
 
 [node name="Area2D" parent="." index="4"]
 collision_layer = 2

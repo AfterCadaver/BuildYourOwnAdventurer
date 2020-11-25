@@ -25,7 +25,13 @@ func _ready():
 	
 	BB.set("player", self)
 	BB.set("player_position", self.position)
-	
+
+func _unhandled_input(event):
+	if event.is_pressed():
+		if  event.button_index == BUTTON_WHEEL_DOWN:
+			$Camera2D.zoom += Vector2(.1,.1)
+		elif event.button_index == BUTTON_WHEEL_UP:
+			$Camera2D.zoom -= Vector2(.1,.1)
 func reach_priority(priority:String):
 	
 	speed = max_speed

@@ -13,21 +13,27 @@ export (NoiseTexture) var noise
 func _ready():
 	pass
 
-func randomly_add(tilemap:TileMap, number=5):
+func create_pathway(tilemap: TileMap, points_array:Array, dimensions: Vector2):
 	
-	var this = []
-	var hmm = []
+	var new_points = []
 	
-	for tiles in tilemap.get_used_cells():
-		var noise_value = noise.noise.get_noise_2d(tiles.x, tiles.y)
-		this.append(tiles)
+	for point in range(points_array.size() -1):
+		new_points.append(points_array[point])
 		
-	for i in range(number):
-		hmm.append(this[rand_range(0, this.size())])
-			
-	return hmm
+		for in_between_point in get_in_between_points(points_array[point], points_array[point+1]):
+			new_points.append(in_between_point)
+		
+	for point in new_points:
+		
+		for a in range(dimensions.x):
+			for b in range(dimensions.y):
+				tilemap.set_cell(point.x + a, point.y + b, 2)
+				
+	print(points_array)
+				
+	tilemap.update_bitmask_region(points_array[0], points_array[-1])
 
-func create_river(a, b):
+func get_in_between_points(a, b):
 	
 	#CURRENTLY ABLE TO draw a line  from point a to point b about one pixel thick
 	
@@ -51,6 +57,22 @@ func create_river(a, b):
 		
 	
 	return tiles
+
+func randomly_add(tilemap:TileMap, number=5):
+	
+	var this = []
+	var hmm = []
+	
+	for tiles in tilemap.get_used_cells():
+		var noise_value = noise.noise.get_noise_2d(tiles.x, tiles.y)
+		this.append(tiles)
+		
+	for i in range(number):
+		hmm.append(this[rand_range(0, this.size())])
+			
+	return hmm
+
+
 
 func generate(tilemap: TileMap):
 	var that = round(rand_range(0,20))

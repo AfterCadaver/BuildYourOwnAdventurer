@@ -147,7 +147,7 @@ func get_time():
 
 func _on_Actor_input_event(_viewport, event, _shape_idx):
 	
-	if event is InputEventMouseButton:
+	if event is InputEventMouseButton and event.button_index:
 		emit_signal("update_hud", self)
 
 func _on_Area2D_body_entered(body):

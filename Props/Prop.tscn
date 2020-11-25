@@ -4,6 +4,7 @@
 [ext_resource path="res://tilemap_packed.png" type="Texture" id=2]
 
 [node name="Prop" type="StaticBody2D"]
+z_index = 4
 input_pickable = true
 script = ExtResource( 1 )
 

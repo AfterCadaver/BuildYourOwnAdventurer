@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Actors/Actor.gd" type="Script" id=1]
 [ext_resource path="res://SaveFile.gd" type="Script" id=2]
@@ -7,7 +7,12 @@
 [ext_resource path="res://Assets/test_healthbar.png" type="Texture" id=5]
 [ext_resource path="res://HUD/Norse.otf" type="DynamicFontData" id=6]
 
-[sub_resource type="Resource" id=1]
+[sub_resource type="Shader" id=1]
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+
+[sub_resource type="Resource" id=3]
 script = ExtResource( 2 )
 application_version = ""
 slot = 0
@@ -15,8 +20,39 @@ data = {
 
 }
 
-[sub_resource type="Animation" id=2]
-resource_name = "swing_axe"
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+
+
+uniform float border_thicknness : hint_range(0.0, 30.0);
+
+uniform vec4 border_color : hint_color;
+
+void fragment(){
+	float size = border_thicknness * 1.0 / float(textureSize(TEXTURE,0).x);
+	vec4 sprite_color = texture(TEXTURE,UV);
+	float alpha = -8.0 * sprite_color.a;
+	
+	alpha += texture(TEXTURE,UV + vec2(0.0, -size)).a;
+	alpha += texture(TEXTURE,UV + vec2(size, -size)).a;
+	alpha += texture(TEXTURE,UV + vec2(size, 0.0)).a;
+	alpha += texture(TEXTURE,UV + vec2(size, size)).a;
+	alpha += texture(TEXTURE,UV + vec2(0.0, size)).a;
+	alpha += texture(TEXTURE,UV + vec2(-size, size)).a;
+	alpha += texture(TEXTURE,UV + vec2(-size, 0.0)).a;
+	alpha += texture(TEXTURE,UV + vec2(-size, -size)).a;
+	
+	vec4 final_color = mix(sprite_color, border_color, clamp(alpha, 0.0, 1.0));
+	
+	COLOR = vec4(final_color.rgb, clamp(abs(alpha)+ sprite_color.a, 0.0, 1.0));}"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+shader_param/border_thicknness = 0.0
+shader_param/border_color = null
+
+[sub_resource type="Animation" id=6]
 length = 0.2
 tracks/0/type = "value"
 tracks/0/path = NodePath("Axe:position")
@@ -31,11 +67,11 @@ tracks/0/keys = {
 "values": [ Vector2( 104.389, 49.9496 ), Vector2( -1.68369, 69.5927 ), Vector2( -92.0419, 52.1945 ) ]
 }
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=7]
 size = 23
 font_data = ExtResource( 6 )
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=8]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:modulate")
@@ -51,18 +87,20 @@ tracks/0/keys = {
 }
 
 [node name="Actor" type="KinematicBody2D"]
+material = SubResource( 2 )
 input_pickable = true
 script = ExtResource( 1 )
-save_file = SubResource( 1 )
+save_file = SubResource( 3 )
 flavor_text = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
 [node name="Sprite" type="Sprite" parent="."]
 modulate = Color( 1, 0, 0, 1 )
+material = SubResource( 5 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/swing_axe = SubResource( 2 )
+anims/swing_axe = SubResource( 6 )
 
 [node name="Area2D" type="Area2D" parent="."]
 
@@ -77,7 +115,7 @@ margin_left = -22.4746
 margin_top = -71.4442
 margin_right = 22.5254
 margin_bottom = -47.4442
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 7 )
 text = "Actor"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -95,7 +133,7 @@ __meta__ = {
 }
 
 [node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
-anims/damaged = SubResource( 4 )
+anims/damaged = SubResource( 8 )
 [connection signal="input_event" from="." to="." method="_on_Actor_input_event"]
 [connection signal="mouse_entered" from="." to="." method="_on_Actor_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Actor_mouse_exited"]

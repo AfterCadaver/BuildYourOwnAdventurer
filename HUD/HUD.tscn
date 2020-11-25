@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://HUD/HUD.gd" type="Script" id=1]
 [ext_resource path="res://Assets/button.png" type="Texture" id=2]
@@ -8,25 +8,92 @@
 [ext_resource path="res://Assets/PNG/buttonRound_beige.png" type="Texture" id=6]
 
 [sub_resource type="DynamicFont" id=1]
-size = 31
-font_data = ExtResource( 3 )
-
-[sub_resource type="DynamicFont" id=2]
 size = 76
 use_filter = true
 font_data = ExtResource( 3 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 31
+font_data = ExtResource( 3 )
+
+[sub_resource type="Shader" id=4]
+code = "shader_type canvas_item;
+
+//an attempt at creating a gaussian blur shader
+
+"
+
+[sub_resource type="ShaderMaterial" id=5]
+shader = SubResource( 4 )
+
+[sub_resource type="Shader" id=6]
+code = "shader_type canvas_item;
+
+//Based on this inplementation: https://coffeefuelledcode.co.uk/kod/desaturation-shader/
+
+void fragment(){
+	vec3 color = texture(SCREEN_TEXTURE, SCREEN_UV).rgb;
+	
+	float gray = dot(color, vec3(0.2126, 0.7152, 0.0722));
+	
+	COLOR.r = gray;
+	COLOR.g = gray;
+	COLOR.b = gray;
+
+}"
+
+[sub_resource type="ShaderMaterial" id=7]
+shader = SubResource( 6 )
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource( 1 )
 
-[node name="Desaturate" type="ColorRect" parent="."]
-visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color( 0.34902, 0.34902, 0.34902, 0.807843 )
+[node name="Label2" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -182.0
+margin_top = -38.5
+margin_right = 182.0
+margin_bottom = 38.5
+custom_fonts/font = SubResource( 1 )
+text = "South Escoras"
+align = 1
+valign = 1
+uppercase = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 269.271
+margin_top = 28.0
+margin_right = 361.271
+margin_bottom = 44.0
+custom_fonts/font = SubResource( 2 )
+text = "TIME: MIDDAY"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 16.587
+
+[node name="Button" type="Button" parent="."]
+anchor_left = 0.821
+anchor_right = 0.974
+anchor_bottom = 0.179
+margin_left = -0.0386353
+margin_top = 10.6856
+margin_right = -0.0636292
+margin_bottom = 0.152599
+text = "Enhance"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -64,7 +131,7 @@ margin_left = 36.0594
 margin_top = 199.059
 margin_right = 197.059
 margin_bottom = 280.059
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 3 )
 text = "Nobody"
 align = 1
 autowrap = true
@@ -98,55 +165,18 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Label2" type="Label" parent="."]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -182.0
-margin_top = -38.5
-margin_right = 182.0
-margin_bottom = 38.5
-custom_fonts/font = SubResource( 2 )
-text = "South Escoras"
-align = 1
-valign = 1
-uppercase = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Label" type="Label" parent="."]
-margin_left = 269.271
-margin_top = 28.0
-margin_right = 361.271
-margin_bottom = 44.0
-custom_fonts/font = SubResource( 3 )
-text = "TIME: MIDDAY"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Tween" type="Tween" parent="."]
-
-[node name="Timer" type="Timer" parent="."]
-wait_time = 16.587
-
-[node name="Button" type="Button" parent="."]
-anchor_left = 0.821
-anchor_right = 0.974
-anchor_bottom = 0.179
-margin_left = -0.0386353
-margin_top = 10.6856
-margin_right = -0.0636292
-margin_bottom = 0.152599
-text = "Enhance"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
 [node name="ColorRect" parent="." instance=ExtResource( 4 )]
 visible = false
-[connection signal="pressed" from="TextureRect/ShoworHide" to="." method="_on_ShoworHide_pressed"]
+material = SubResource( 5 )
+
+[node name="Desaturate" type="ColorRect" parent="."]
+visible = false
+material = SubResource( 7 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Button" to="." method="_on_Button_pressed"]
+[connection signal="pressed" from="TextureRect/ShoworHide" to="." method="_on_ShoworHide_pressed"]

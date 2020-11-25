@@ -37,15 +37,23 @@ func _draw():
 func _ready():
 	#for coords in create_river(Vector2.ZERO, Vector2(10,7)):
 		#set_cellv(coords, 0)
+		
 	pass
-func generate_chunk():
+
+func create_pathway(points_array:Array, width: int, height:int):
+	for point in create_river(points_array):
+		for a in range(width):
+			for b in range(height):
+				set_cell(point.x + a, point.y + b, 2)
+
+func generate_chunk(dimensions:Vector2):
 	var that = round(rand_range(0,20))
 	print(that)
-	for x in range(150):
+	for x in range(dimensions.x):
 		var row = []
 		tiles.append(row)
 		
-		for y in range(150):
+		for y in range(dimensions.y):
 			
 			var chosen_tile = -1
 			
@@ -65,28 +73,6 @@ func generate_chunk():
 	
 	$TileMap.update_bitmask_region(Vector2.ZERO, Vector2(500,500))
 	update_dirty_quadrants()
-
-func create_roads(a, b):
-	
-	var tiles = []
-	
-	var now_tile
-	var end_tile
-	
-	var end_direction = (b-a).normalized()
-	
-	var next_tile = Vector2(round(end_direction.x), round(end_direction.y))
-	
-	while now_tile != end_tile:
-		end_direction = (end_tile-now_tile).normalized()
-	
-		next_tile = Vector2(round(end_direction.x), round(end_direction.y))
-		
-		print(now_tile)
-		tiles.append(now_tile)
-		
-	
-	return tiles
 
 
 func create_river(a, b):
@@ -157,6 +143,7 @@ cell_size = Vector2( 16, 16 )
 format = 1
 script = SubResource( 1 )
 noise = SubResource( 3 )
+grid_size = null
 draw = false
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -172,6 +159,5 @@ cell_size = Vector2( 16, 16 )
 format = 1
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 1114.81, 894.224 )
+position = Vector2( 538.029, 297.447 )
 current = true
-zoom = Vector2( 6, 6 )

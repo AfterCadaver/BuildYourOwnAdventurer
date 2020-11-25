@@ -23,20 +23,28 @@ func _ready():
 
 	for actor in get_tree().get_nodes_in_group("actors"):
 		actor.connect("shoot", self, "spawn_projectile")
-	$StageGenerator.generate($TileMap)
+	$StageGenerator.generate($Navigation2D2/TileMap)
 	
-	for mines in $StageGenerator.randomly_add($TileMap):
+	var mine_locations = $StageGenerator.randomly_add($Navigation2D2/TileMap)
+	
+	for mine in range(mine_locations.size() - 1):
+	
+		var path = $Navigation2D2.get_simple_path(mine_locations[mine], mine_locations[mine-1])
+	
+		$StageGenerator.create_pathway($"Layer 2", path, Vector2(8,8))
+	
+	for mines in mine_locations:
 		var this = mineshaft.instance()
 		this.position = mines * 16
 		add_child(this)
 		
-	for trees in $StageGenerator.randomly_add($TileMap, 80):
+	for trees in $StageGenerator.randomly_add($Navigation2D2/TileMap, 10):
 		var this = tree.instance()
 		this.position = trees * 16
 		$YSort.add_child(this)
 	
 
-	$TileMap.update_dirty_quadrants()
+	$Navigation2D2/TileMap.update_dirty_quadrants()
 	
 	$BlackBoard.set("enemies", get_tree().get_nodes_in_group("enemies"))
 	$BlackBoard.set("mines_array", get_tree().get_nodes_in_group("mines"))
